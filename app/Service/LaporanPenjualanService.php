@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Service;
+
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
+class LaporanPenjualanService
+{
+    public function ringkasanHariIni(): array
+    {
+        $data = DB::table('penjualan')
+            ->whereDate('created_at', Carbon::today())
+            ->where('status', 'completed')
+            ->selectRaw('
+                COUNT(*) as total_transaksi,
+                SUM(total_pembayaran) as total_penjualan,
+                SUM(CASE WHEN metode_pembayaran = "CASH" THEN total_pembayaran ELSE 0 END) as total_cash,
+                SUM(CASE WHEN metode_pembayaran = "CASH" THEN total_pembayaran ELSE 0 END) as total_non_tunai
+            ')
+            ->first();
+
+        return [
+            'total_transaksi' => $data->total_transaksi ?? 0,
+            'total_penjualan' => $data->total_penjualan ?? 0,
+            'total_cash' => $data->total_cash ?? 0,
+            'total_non_tunai' => $data->total_non_tunai ?? 0
+        ];
+    }
+    public function produkTerlarisHariIni(int $limit = 5)
+    {
+        return DB::table('item_penjualan')
+            ->join('penjualan', 'item_penjualan.penjualan_id', '=', 'penjualan.id')
+            ->join('produk', 'item_penjualan.produk_id', '=', 'produk.id')
+            ->whereDate('penjualan.created_at', Carbon::today())
+            ->where('penjualan.status', 'completed')
+            ->groupBy('produk.id', 'produk.nama', 'produk.stok')
+            ->select(
+                'produk.id',
+                'produk.nama',
+                'produk.stok',
+                DB::raw('SUM(item_penjualan.kuantitas) as total_terjual')
+            )
+            ->orderByDesc('total_terjual')
+            ->limit($limit)
+            ->get();
+
+        
+    }
+}
