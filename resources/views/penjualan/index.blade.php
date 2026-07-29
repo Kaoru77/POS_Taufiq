@@ -6,7 +6,14 @@
 
 @include('layouts.navbar')
 
-<h1>Halaman jualan</h1>
+@if(session('error'))  
+       <div class="alert alert-danger">
+              {{session('error')}}
+       </div>
+    
+@endif
+
+<h1>Halaman Penjualan</h1>
 
 <a href="{{route('penjualan.create')}}"class="btn btn-primary mb-3">Create</a>
 
@@ -47,16 +54,20 @@
       <td>{{$sale->status}}</td>
       <td class="d-flex gap-1">
         <a href=""class="btn btn-primary">Detail</a>
+        @can('view',$sale)
         ||
-        <a href="" class="btn btn-warning">Edit</a>
+        <a href="{{route('penjualan.edit', $sale)}}" class="btn btn-warning">Edit</a>
+        @endcan
+        @can('delete',$sale)
         ||
-        <form action="" method="" class="d-inline" >
+        <form action="{{route('penjualan.destroy', $sale)}}" method="POST" class="d-inline" >
             @csrf
             @method('DELETE')
             <BUtton class="btn btn-danger" onclick="return comfirm('Apakah anda yakin akan menghapus penjualan ini?')">
                 Hapus
             </BUtton>
         </form>
+        @endcan 
       </td>
     </tr>
     @empty

@@ -59,7 +59,7 @@
                         Detail
                     </a>
                     @endcan
-
+                    ||
                     {{-- Tombol Edit (Tanpa @can) --}}
                     <a href="{{ route('produk.edit', $product->id) }}" class="btn btn-warning btn-sm">Edit</a>
                     
