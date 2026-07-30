@@ -36,7 +36,7 @@
     <label>Nama Produk</label><br>
     <input type="text" name="name"
            class="form-control @error('name') is-invalid @enderror"
-           value="{{ old('name',$produk->nama ?? '') }}">
+           value="{{ old('name', $produk->nama ?? '') }}">
     @error('name')
         <div class="invalid-feedback">
             {{ $message }}
@@ -44,7 +44,22 @@
     @enderror
 </div>
 
-<div>
+{{-- BAGIAN BARU: Input Jenis / Kategori Produk --}}
+<div class="mt-2">
+    <label>Jenis Produk</label><br>
+    <select name="kategori" class="form-select form-control @error('kategori') is-invalid @enderror">
+        <option value="">-- Pilih Jenis Produk --</option>
+        <option value="Makanan" {{ old('kategori', $produk->kategori ?? '') == 'Makanan' ? 'selected' : '' }}>Makanan</option>
+        <option value="Minuman" {{ old('kategori', $produk->kategori ?? '') == 'Minuman' ? 'selected' : '' }}>Minuman</option>
+    </select>
+    @error('kategori')
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
+    @enderror
+</div>
+
+<div class="mt-2">
     <label>Harga Beli</label><br>
     <input type="number" name="purchase_price"
            class="form-control @error('purchase_price') is-invalid @enderror"
@@ -56,7 +71,7 @@
     @enderror
 </div>
 
-<div>
+<div class="mt-2">
     <label>Harga Jual</label><br>
     <input type="number" name="selling_price"
            class="form-control @error('selling_price') is-invalid @enderror"
@@ -68,7 +83,7 @@
     @enderror
 </div>
 
-<div>
+<div class="mt-2">
     <label>Stok</label><br>
     <input type="number" name="stock"
            class="form-control @error('stock') is-invalid @enderror"
@@ -81,6 +96,7 @@
 </div>
 
 <button class="btn btn-success mt-3" type="submit">Simpan</button>
+<a href="{{ route('produk.index') }}" class="btn btn-secondary mt-3">Kembali</a>
 
 <script>
 function previewImage(input) {
@@ -93,4 +109,3 @@ function previewImage(input) {
     }
 }
 </script>
-<a href="{{ route('produk.index') }}" class="btn btn-secondary mt-3">Kembali</a>

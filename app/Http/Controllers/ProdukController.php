@@ -12,21 +12,28 @@ use Illuminate\Support\Facades\Storage;
 
 class ProdukController extends Controller
 {
-    public function index(SearchRequest $request)
+    public function index(Request $request) // Menggunakan Request agar bisa baca query string 'kategori' & 'search'
     {
         $this->authorize('viewAny', Produk::class);
+        
         $keyword = $request->input('search');
+        $kategori = $request->input('kategori');
 
+        // Buat query dasar
+        $query = Produk::query();
+
+        // Filter berdasarkan pencarian nama produk
         if ($keyword) {
-            $products = Produk::when($keyword, function ($query) use ($keyword) {
-                $query->where('nama', 'like', '%' . $keyword . '%');
-            })
-                ->orderBy('nama')
-                ->paginate(10)
-                ->withQueryString();
-        } else {
-            $products = Produk::latest()->paginate(10)->withQueryString();
+            $query->where('nama', 'like', '%' . $keyword . '%');
         }
+
+        // Filter berdasarkan jenis / kategori produk
+        if ($kategori) {
+            $query->where('kategori', $kategori);
+        }
+
+        // Eksekusi data dengan urutan terbaru & pagination
+        $products = $query->latest()->paginate(10)->withQueryString();
 
         return view('produk.index', compact('products'));
     }
@@ -44,11 +51,12 @@ class ProdukController extends Controller
 
         $dataReq = $request->validated();
 
-        $data['user_id'] = Auth::id();
-        $data['nama'] = $dataReq['name'];
+        $data['user_id']    = Auth::id();
+        $data['nama']       = $dataReq['name'];
+        $data['kategori']   = $dataReq['kategori']; // <--- MENAMBAHKAN KATEGORI
         $data['harga_beli'] = $dataReq['purchase_price'];
         $data['harga_jual'] = $dataReq['selling_price'];
-        $data['stok'] = $dataReq['stock'] ?? true;
+        $data['stok']       = $dataReq['stock'] ?? true;
 
         if ($request->hasFile('foto')) {
             $data['foto'] = $request->file('foto')->store('products', 'public');
@@ -73,6 +81,7 @@ class ProdukController extends Controller
         $data = [
             'user_id'    => Auth::id(),
             'nama'       => $dataReq['name'],
+            'kategori'   => $dataReq['kategori'], // <--- MENAMBAHKAN KATEGORI
             'harga_beli' => $dataReq['purchase_price'],
             'harga_jual' => $dataReq['selling_price'],
             'stok'       => $dataReq['stock'],
@@ -104,6 +113,7 @@ class ProdukController extends Controller
         return redirect()->route('produk.index')
             ->with('success', 'Product deleted successfully.');
     }
+
     public function show(Produk $produk)
     {
         // Otorisasi menggunakan ProdukPolicy method view

@@ -7,7 +7,7 @@
 @include('layouts.navbar')
 
 <h1>halaman users</h1>
-<a href="{{route('admin.users.create')}}" class="btn btn-primary">create</a>
+<a href="{{route('admin.users.create')}}" class="btn btn-primary">Create</a>
 <form action="{{ route('admin.users') }}" method="GET" class="mb-3">
     <div class="input-group">
         <input
@@ -56,4 +56,9 @@
 @endforeach 
   </tbody> 
   </table>
+
+{{-- TAMBAHKAN BARIS INI UNTUK MENAMPILKAN TOMBOL PINDAH HALAMAN --}}
+<div class="d-flex justify-content-end mt-3">
+    {{ $users->links() }}
+</div>
 @endsection
