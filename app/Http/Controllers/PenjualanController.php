@@ -84,7 +84,9 @@ class PenjualanController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $penjualan = Penjualan::with(['user', 'itemPenjualan.produk'])->findOrFail($id);
+
+        return view('penjualan.show', compact('penjualan'));
     }
 
     /**
@@ -109,7 +111,7 @@ class PenjualanController extends Controller
     public function update(Request $request, Penjualan $penjualan)
     {
         $request->validate([
-            'payment_method' => 'required|in:CASH,QRIS'
+            'payment_method' => 'required|in:CASH,QRIS,TRANSFER'
         ]);
 
         if ($penjualan->status !== 'OPEN') {
@@ -142,7 +144,7 @@ class PenjualanController extends Controller
      */
     public function destroy(Penjualan $penjualan)
     {
-        $this->authorize('delete',$penjualan);
+        $this->authorize('delete', $penjualan);
         // ! Pastikan hanya transaksi OPEN
         if ($penjualan->status !== 'OPEN') {
             return redirect()->route('penjualan.index')->with('error', 'Transaksi sudah selesai tidak bisa dibatalkan');

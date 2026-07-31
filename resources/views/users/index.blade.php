@@ -6,8 +6,8 @@
 
 @include('layouts.navbar')
 
-<h1>halaman users</h1>
-<a href="{{route('admin.users.create')}}" class="btn btn-primary">Create</a>
+<h1>Halaman Users</h1>
+<a href="{{route('admin.users.create')}}" class="btn btn-primary mb-3">Create</a>
 <form action="{{ route('admin.users') }}" method="GET" class="mb-3">
     <div class="input-group">
         <input
@@ -43,6 +43,9 @@
         <a href="{{ route('admin.users.edit',$user)}}" class="btn btn-sm btn-warning">
             Edit Akun
         </a>
+        
+        {{-- Sembunyikan tombol hapus jika ID user sama dengan ID akun yang sedang login --}}
+        @if($user->id !== auth()->id())
         ||
         <form action="{{route ('admin.users.destroy', $user)}}" method="POST" class="d-inline">
             @csrf
@@ -51,6 +54,9 @@
                 Hapus
             </button>
         </form>
+        @else
+        <span class="badge bg-secondary ms-1">IN</span>
+        @endif
     </td>
 </tr>
 @endforeach 

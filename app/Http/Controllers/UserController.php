@@ -20,15 +20,19 @@ class UserController extends Controller
     {
         $keyword = $request->input('search');
 
-        if($keyword) {
+        if ($keyword) {
             $users = User::whereRaw("MATCH(name, email) AGAINST(? IN BOOLEAN MODE)", [$keyword])
-            ->paginate(10)
-            ->withQueryString();
+                ->orderByRaw("id = ? DESC", [auth()->id()]) // Posisikan user login paling atas
+                ->paginate(10)
+                ->withQueryString();
         } else {
-            $users = User::query()->paginate(10)->withQueryString();
-    }
+            $users = User::query()
+                ->orderByRaw("id = ? DESC", [auth()->id()]) // Posisikan user login paling atas
+                ->paginate(10)
+                ->withQueryString();
+        }
 
-          return view('users.index', compact('users'));
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -65,7 +69,7 @@ class UserController extends Controller
     {
         $roles = Role::all();
 
-        return view('users.edit', compact('user','roles'));
+        return view('users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -75,7 +79,7 @@ class UserController extends Controller
     {
         $roles = Role::all();
 
-        return view('users.edit', compact('user','roles'));
+        return view('users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -90,8 +94,8 @@ class UserController extends Controller
         $user->role_id = $dataReq['role_id'];
 
         if (!empty($dataReq['password'])) {
-        $user->password = Hash::make($dataReq['password']);
-       }
+            $user->password = Hash::make($dataReq['password']);
+        }
 
         $user->save();
 
@@ -103,8 +107,17 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
+        // 1. Cegah menghapus akun yang sedang digunakan
+        if ($user->id === auth()->id()) {
+            return back()->with('error', 'Anda tidak dapat menghapus akun Anda sendiri!');
+        }
 
-        return back()->with('success','User deleted');
+        // 2. Tangkap error relasi Foreign Key saat menghapus
+        try {
+            $user->delete();
+            return back()->with('success', 'User berhasil dihapus.');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->with('error', 'User tidak dapat dihapus karena masih terhubung dengan data produk atau transaksi lain.');
+        }
     }
 }

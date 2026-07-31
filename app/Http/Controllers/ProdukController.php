@@ -15,7 +15,7 @@ class ProdukController extends Controller
     public function index(Request $request) // Menggunakan Request agar bisa baca query string 'kategori' & 'search'
     {
         $this->authorize('viewAny', Produk::class);
-        
+
         $keyword = $request->input('search');
         $kategori = $request->input('kategori');
 
@@ -116,9 +116,11 @@ class ProdukController extends Controller
 
     public function show(Produk $produk)
     {
-        // Otorisasi menggunakan ProdukPolicy method view
         $this->authorize('view', $produk);
 
-        return view('produk.show', compact('produk'));
+        // Eager load relasi agar data kasir dan riwayat transaksi terbaca
+        $produk->load(['user', 'itemPenjualan.penjualan.user']);
+
+        return view('produk.detail', compact('produk'));
     }
 }

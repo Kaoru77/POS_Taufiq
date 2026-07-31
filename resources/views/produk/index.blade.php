@@ -6,7 +6,7 @@
 
 @include('layouts.navbar')
     
-<h1>halaman produk</h1>
+<h1>Halaman Produk</h1>
 
 @can('create', App\Models\Produk::class)
 <a href="{{ route('produk.create') }}" class="btn btn-primary mb-3">Create</a>
@@ -78,15 +78,18 @@
                     @can('view', $product)
                     <a href="{{ route('produk.show', $product->id) }}" class="btn btn-info btn-sm">
                         Detail
-                    </a>
+                    </a> 
                     @endcan
-                    ||
+
                     {{-- Tombol Edit --}}
-                    <a href="{{ route('produk.edit', $product->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                    
+                    @can('update', $product)
                     ||
+                    <a href="{{ route('produk.edit', $product->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                    @endcan
                     
                     {{-- Tombol Hapus --}}
+                    @can('delete', $product)
+                    ||
                     <form action="{{ route('produk.destroy', $product->id) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
@@ -94,6 +97,7 @@
                             Hapus
                         </button>
                     </form>
+                    @endcan
                 </td>
             </tr>
         @empty
