@@ -54,7 +54,7 @@
       <td>{{$sale->status}}</td>
       <td class="d-flex gap-1">
          <a href="{{route('penjualan.show', $sale->id)}}" class="btn btn-primary">Detail</a>
-        @can('view',$sale)
+        @can('update',$sale)
         ||
         <a href="{{route('penjualan.edit', $sale)}}" class="btn btn-warning">Edit</a>
         @endcan

@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Models\produk;
+use App\Models\Produk;
 
 class MonitoringStokService
 {

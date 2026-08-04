@@ -23,7 +23,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'foto' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'name' => 'required|string|max:255',
             'kategori'       => 'required|string',
             'purchase_price' => 'required|integer|min:0',
@@ -37,6 +37,7 @@ class StoreRequest extends FormRequest
         return [
             'foto.image'             => 'File yang diupload harus gambar.',
             'foto.mimes'             => 'Extensi gambar harus JPG, JPEG, PNG.',
+            'foto.required'          => 'Foto produk wajib diisi.',
             'foto.max'               => 'Maksimal ukuran gambar 2MB.',
             'name.required'          => 'Nama Wajib diisi.',
             'email.email'            => 'Format email tidak valid.',

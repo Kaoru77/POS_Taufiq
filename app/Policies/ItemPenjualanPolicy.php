@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\itemPenjualan;
+use App\Models\ItemPenjualan;
 use App\Models\User;
 
 

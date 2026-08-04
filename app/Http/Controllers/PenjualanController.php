@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SearchRequest;
 use App\Models\Penjualan;
-use App\Models\produk;
+use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -84,7 +84,10 @@ class PenjualanController extends Controller
      */
     public function show(string $id)
     {
-        $penjualan = Penjualan::with(['user', 'itemPenjualan.produk'])->findOrFail($id);
+        $penjualan = Penjualan::findOrFail($id);
+        $this->authorize('view', $penjualan);
+
+        $penjualan->load(['user', 'itemPenjualan.produk']);
 
         return view('penjualan.show', compact('penjualan'));
     }
@@ -95,6 +98,8 @@ class PenjualanController extends Controller
     public function edit(Penjualan $penjualan)
     {
         $sale = $penjualan;
+
+        $this->authorize('update', $sale);
 
         abort_if($sale->status === 'COMPLETED', 403);
 
@@ -110,6 +115,9 @@ class PenjualanController extends Controller
      */
     public function update(Request $request, Penjualan $penjualan)
     {
+
+        $this->authorize('update', $penjualan);
+        
         $request->validate([
             'payment_method' => 'required|in:CASH,QRIS,TRANSFER'
         ]);
