@@ -64,11 +64,9 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
-        $roles = Role::all();
-
-        return view('users.edit', compact('user', 'roles'));
+        return view('users.show', compact('user'));
     }
 
     /**

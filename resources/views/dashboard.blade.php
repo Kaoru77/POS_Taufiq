@@ -9,7 +9,7 @@
         </small>
     </h1>
     <div class="row">
-        @can('viewAny',App\Models\User::class)
+        @can('viewRevenue')
         <div class="col-md-12">
             <h1>Today's sales</h1>
         </div>

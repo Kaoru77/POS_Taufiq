@@ -8,3 +8,41 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+:root {
+    --bs-primary: #7B4B2A;
+    --bs-primary-rgb: 123, 75, 42;
+    --bs-primary-text-emphasis: #4E2F1A;
+    --bs-primary-bg-subtle: #F3E6D8;
+    --bs-primary-border-subtle: #D9BFA3;
+    --bs-link-color: #7B4B2A;
+    --bs-link-hover-color: #5C3820;
+    --bs-body-bg: #FFF8F0;
+}
+
+.navbar-bakery {
+    background-color: #4E2F1A;
+}
+
+.navbar-bakery .navbar-brand,
+.navbar-bakery .nav-link {
+    color: #FFF8F0 !important;
+}
+
+.navbar-bakery .nav-link.active {
+    color: #F3C77A !important;
+    font-weight: 600;
+}
+
+.navbar-bakery .navbar-toggler-icon {
+    filter: invert(1);
+}
+.btn-logout {
+    background-color: transparent;
+    border: 1px solid #F3C77A;
+    color: #F3C77A;
+}
+.btn-logout:hover {
+    background-color: #F3C77A;
+    color: #4E2F1A;
+}

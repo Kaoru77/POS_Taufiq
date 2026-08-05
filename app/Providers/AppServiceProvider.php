@@ -41,5 +41,9 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setLocale('id');
         $this->registerPolicies();
 
+        Gate::define('viewRevenue', function ($user) {
+            return $user->role->name === 'admin';
+        });
+
     }
 }
