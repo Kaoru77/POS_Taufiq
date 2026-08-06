@@ -3,9 +3,6 @@
 @section('title', 'produk')
 
 @section('content')
-
-@include('layouts.navbar')
-    
 <h1>Halaman Produk</h1>
 
 @can('create', App\Models\Produk::class)

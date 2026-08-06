@@ -23,7 +23,7 @@
       {{-- Form logout --}}
       <form class="d-flex" action="{{ route('logout') }}" method="POST">
         @csrf
-        <button type="submit" class="btn btn-logout">Logout</button>
+        <button type="submit" class="btn btn-logout"><i class="bi bi-box-arrow-right"></i> Logout</button>
       </form>
     </div>
   </div>

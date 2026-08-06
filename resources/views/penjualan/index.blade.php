@@ -4,8 +4,6 @@
     
 @section('content')
 
-@include('layouts.navbar')
-
 @if(session('error'))  
        <div class="alert alert-danger">
               {{session('error')}}

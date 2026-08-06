@@ -45,7 +45,7 @@
                     @enderror
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100 py-2">Masuk</button>
+                <button type="submit" class="btn btn-caramel w-100 py-2">Masuk</button> 
             </form>
         </div>
     </div>
@@ -89,6 +89,18 @@
     background: #fff;
     border-radius: 1rem;
     box-shadow: 0 10px 30px rgba(78,47,26,.1);
+}
+.btn-caramel {
+    background-color: #C9922E;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    transition: background-color .2s ease;
+}
+.btn-caramel:hover,
+.btn-caramel:focus {
+    background-color: #A97722;
+    color: #fff;
 }
 
 </style>

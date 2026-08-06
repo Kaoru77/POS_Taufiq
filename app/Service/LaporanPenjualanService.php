@@ -16,7 +16,7 @@ class LaporanPenjualanService
                 COUNT(*) as total_transaksi,
                 SUM(total_pembayaran) as total_penjualan,
                 SUM(CASE WHEN metode_pembayaran = "CASH" THEN total_pembayaran ELSE 0 END) as total_cash,
-                SUM(CASE WHEN metode_pembayaran = "CASH" THEN total_pembayaran ELSE 0 END) as total_non_tunai
+                SUM(CASE WHEN metode_pembayaran != "CASH" THEN total_pembayaran ELSE 0 END) as total_non_tunai
             ')
             ->first();
 
