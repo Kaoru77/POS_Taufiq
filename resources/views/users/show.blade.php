@@ -4,8 +4,6 @@
 
 @section('content')
 
-@include('layouts.navbar')
-
 <h1>Detail User</h1>
 
 <table class="table w-auto">

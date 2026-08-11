@@ -23,7 +23,14 @@ class PenjualanPolicy
     }
     public function update(User $user, Penjualan $penjualan): bool
     {
-        return $user->role->name === 'admin'
-            && $penjualan->status === 'OPEN';
+        if ($penjualan->status !== 'OPEN') {
+            return false;
+        }
+
+        if ($user->role->name === 'admin') {
+            return true;
+        }
+
+        return $user->role->name === 'kasir' && $penjualan->user_id === $user->id;
     }
 }
