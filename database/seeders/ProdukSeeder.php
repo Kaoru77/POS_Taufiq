@@ -58,7 +58,7 @@ class ProdukSeeder extends Seeder
                     'foto'       => null,
                     'nama'       => $nama,
                     'kategori'   => $kategori,
-                    'harga_beli' => $hargaBeli,
+                     'harga_beli' => $hargaBeli,
                     'harga_jual' => $hargaJual,
                     'stok'       => rand(10, 50),
                 ]);

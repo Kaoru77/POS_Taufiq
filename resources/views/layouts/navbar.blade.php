@@ -18,6 +18,9 @@
         <li class="nav-item">
           <a class="nav-link {{ Request::is('penjualan') ? 'active' : '' }}" href="{{ route('penjualan.index') }}">Penjualan</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link {{ Request::is('kategori') ? 'active' : '' }}" href="{{ route('kategori.index') }}">Kategori</a>
+        </li>
       </ul>
 
       {{-- Form logout --}}

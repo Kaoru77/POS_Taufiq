@@ -14,7 +14,7 @@ class Produk extends Model
         'user_id',
         'foto',
         'nama',
-        'kategori',
+        'kategori_id',
         'nama_beli',
         'harga_beli',
         'harga_jual',
@@ -30,4 +30,8 @@ class Produk extends Model
     {
         return $this->hasMany(ItemPenjualan::class, 'produk_id');
     }
+     public function kategori()
+     {
+         return $this->belongsTo(Kategori::class, 'kategori_id');
+     }
 }

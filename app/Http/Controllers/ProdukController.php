@@ -6,6 +6,7 @@ use App\Http\Requests\Produk\StoreRequest;
 use App\Http\Requests\Produk\UpdateRequest;
 use App\Http\Requests\SearchRequest;
 use App\Models\Produk;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -29,20 +30,23 @@ class ProdukController extends Controller
 
         // Filter berdasarkan jenis / kategori produk
         if ($kategori) {
-            $query->where('kategori', $kategori);
+            $query->where('kategori_id', $kategori);
         }
 
         // Eksekusi data dengan urutan terbaru & pagination
         $products = $query->latest()->paginate(10)->withQueryString();
 
-        return view('produk.index', compact('products'));
+        $kategoris = Kategori::orderBy('nama')->get();
+
+        return view('produk.index', compact('products', 'kategoris'));
     }
 
     public function create()
     {
         $this->authorize('create', Produk::class);
 
-        return view('produk.create');
+        $kategoris = Kategori::orderBy('nama')->get(); // Ambil semua kategori untuk dropdown
+        return view('produk.create', compact('kategoris'));
     }
 
     public function store(StoreRequest $request)
@@ -53,7 +57,7 @@ class ProdukController extends Controller
 
         $data['user_id']    = Auth::id();
         $data['nama']       = $dataReq['name'];
-        $data['kategori']   = $dataReq['kategori']; // <--- MENAMBAHKAN KATEGORI
+        $data['kategori_id'] = $dataReq['kategori_id'];
         $data['harga_beli'] = $dataReq['purchase_price'];
         $data['harga_jual'] = $dataReq['selling_price'];
         $data['stok']       = $dataReq['stock'] ?? true;
@@ -70,7 +74,8 @@ class ProdukController extends Controller
     public function edit(Produk $produk)
     {
         $this->authorize('update', $produk);
-        return view('produk.edit', compact('produk'));
+        $kategoris = Kategori::orderBy('nama')->get();
+        return view('produk.edit', compact('produk', 'kategoris'));
     }
 
     public function update(UpdateRequest $request, Produk $produk)
@@ -81,7 +86,7 @@ class ProdukController extends Controller
         $data = [
             'user_id'    => Auth::id(),
             'nama'       => $dataReq['name'],
-            'kategori'   => $dataReq['kategori'], // <--- MENAMBAHKAN KATEGORI
+            'kategori_id' => $dataReq['kategori_id'],
             'harga_beli' => $dataReq['purchase_price'],
             'harga_jual' => $dataReq['selling_price'],
             'stok'       => $dataReq['stock'],

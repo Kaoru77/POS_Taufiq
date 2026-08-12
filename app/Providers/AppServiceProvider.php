@@ -14,6 +14,8 @@ use App\Models\ItemPenjualan;
 use App\Policies\ItemPenjualanPolicy;
 use App\Policies\PenjualanPolicy;
 use App\Policies\ProdukPolicy;
+use App\Models\Kategori;
+use App\Policies\KategoriPolicy;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,7 +25,8 @@ class AppServiceProvider extends ServiceProvider
     protected $policies = [
         Produk::class=> ProdukPolicy::class,
         Penjualan::class => PenjualanPolicy::class,
-        ItemPenjualan::class => ItemPenjualanPolicy::class
+        ItemPenjualan::class => ItemPenjualanPolicy::class,
+        Kategori::class => KategoriPolicy::class
     ];
 
     public function register(): void

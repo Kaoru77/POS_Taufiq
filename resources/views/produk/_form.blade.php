@@ -47,12 +47,15 @@
 {{-- BAGIAN BARU: Input Jenis / Kategori Produk --}}
 <div class="mt-2">
     <label>Jenis Produk</label><br>
-    <select name="kategori" class="form-select form-control @error('kategori') is-invalid @enderror">
-        <option value="">-- Pilih Jenis Produk --</option>
-        <option value="Makanan" {{ old('kategori', $produk->kategori ?? '') == 'Makanan' ? 'selected' : '' }}>Makanan</option>
-        <option value="Minuman" {{ old('kategori', $produk->kategori ?? '') == 'Minuman' ? 'selected' : '' }}>Minuman</option>
-    </select>
-    @error('kategori')
+    <select name="kategori_id" class="form-select form-control @error('kategori_id') is-invalid @enderror">
+         <option value="">-- Pilih Jenis Produk --</option>
+         @foreach($kategoris as $kat)
+         <option value="{{ $kat->id }}" {{ old('kategori_id', $produk->kategori_id ?? '') == $kat->id ? 'selected' : '' }}>
+             {{ $kat->nama }}
+         </option>
+         @endforeach
+     </select>
+     @error('kategori_id')
         <div class="invalid-feedback">
             {{ $message }}
         </div>

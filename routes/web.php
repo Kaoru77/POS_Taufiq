@@ -7,6 +7,7 @@ Use App\Http\Controllers\ItemPenjualanController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\ProdukController;
 Use App\Http\Controllers\UserController;
+Use App\Http\Controllers\KategoriController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'index'])->name('login');
@@ -31,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/produk', ProdukController::class);
     Route::resource('/penjualan', PenjualanController::class);
     Route::resource('/itempenjualan',ItemPenjualanController::class);
+    Route::resource('/kategori', KategoriController::class);
 });
 
 
