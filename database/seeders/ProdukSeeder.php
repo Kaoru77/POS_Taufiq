@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Produk;
+use App\Models\Kategori;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -48,19 +49,26 @@ class ProdukSeeder extends Seeder
             ],
         ];
 
-        foreach ($kategoriData as $kategori => $data) {
+        foreach ($kategoriData as $namaKategori => $data) {
+            $kategoriId = Kategori::where('nama', $namaKategori)->value('id');
+
+            if (!$kategoriId) {
+                $this->command->warn("Kategori '{$namaKategori}' tidak ditemukan, dilewati. Jalankan KategoriSeeder dulu.");
+                continue;
+            }
+
             foreach ($data['items'] as $nama) {
                 $hargaJual = round(rand($data['harga'][0], $data['harga'][1]) / 500) * 500;
                 $hargaBeli = round(($hargaJual * 0.62) / 500) * 500;
 
                 Produk::create([
-                    'user_id'    => $userId,
-                    'foto'       => null,
-                    'nama'       => $nama,
-                    'kategori'   => $kategori,
-                     'harga_beli' => $hargaBeli,
-                    'harga_jual' => $hargaJual,
-                    'stok'       => rand(10, 50),
+                    'user_id'     => $userId,
+                    'foto'        => null,
+                    'nama'        => $nama,
+                    'kategori_id' => $kategoriId,
+                    'harga_beli'  => $hargaBeli,
+                    'harga_jual'  => $hargaJual,
+                    'stok'        => rand(10, 50),
                 ]);
             }
         }

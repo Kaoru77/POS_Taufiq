@@ -18,15 +18,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
             UserSeeder::class,
+            KategoriSeeder::class,
             ProdukSeeder::class,
-            PenjualanSeeder::class
-        ]);
-
-        // User::factory()->count(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            PenjualanSeeder::class,
         ]);
     }
 }

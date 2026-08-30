@@ -156,6 +156,7 @@
             <input type="number" 
                    name="purchase_price" 
                    placeholder="0"
+                   min="0"
                    class="form-control bakery-input @error('purchase_price') is-invalid @enderror"
                    value="{{ old('purchase_price', $produk->harga_beli ?? '') }}">
             @error('purchase_price')
@@ -169,6 +170,7 @@
             <input type="number" 
                    name="selling_price" 
                    placeholder="0"
+                   min="0"
                    class="form-control bakery-input @error('selling_price') is-invalid @enderror"
                    value="{{ old('selling_price', $produk->harga_jual ?? '') }}">
             @error('selling_price')
@@ -182,6 +184,7 @@
             <input type="number" 
                    name="stock" 
                    placeholder="0"
+                   min="0"
                    class="form-control bakery-input @error('stock') is-invalid @enderror"
                    value="{{ old('stock', $produk->stok ?? '') }}">
             @error('stock')
