@@ -11,11 +11,11 @@
         <a href="{{ route('admin.users') }}" class="sidebar-link {{ Request::is('admin/users*') ? 'active' : '' }}">
             <i class="bi bi-people"></i> Users
         </a>
+         <a href="{{ route('kategori.index') }}" class="sidebar-link {{ Request::is('kategori*') ? 'active' : '' }}">
+            <i class="bi bi-tag"></i> Kategori
+        </a>
         <a href="{{ route('produk.index') }}" class="sidebar-link {{ Request::is('produk*') ? 'active' : '' }}">
             <i class="bi bi-cup-hot"></i> Produk
-        </a>
-        <a href="{{ route('kategori.index') }}" class="sidebar-link {{ Request::is('kategori*') ? 'active' : '' }}">
-            <i class="bi bi-tag"></i> Kategori
         </a>
         <a href="{{ route('penjualan.index') }}" class="sidebar-link {{ Request::is('penjualan*') ? 'active' : '' }}">
             <i class="bi bi-receipt"></i> Penjualan

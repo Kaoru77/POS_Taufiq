@@ -12,6 +12,10 @@ class PenjualanSeeder extends Seeder
 {
     public function run(): void
     {
+        if (Penjualan::count() > 0) {
+            $this->command->warn('Sudah ada data penjualan, PenjualanSeeder dilewati.');
+            return;
+        }
         $kasir = User::whereHas('role', fn ($q) => $q->where('name', 'kasir'))->first()
             ?? User::first();
 

@@ -15,7 +15,6 @@ class Produk extends Model
         'foto',
         'nama',
         'kategori_id',
-        'nama_beli',
         'harga_beli',
         'harga_jual',
         'stok'

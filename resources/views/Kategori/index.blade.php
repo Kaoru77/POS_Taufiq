@@ -36,6 +36,7 @@
                 <tr>
                     <th>Nama Kategori</th>
                     <th>Jumlah Produk</th>
+                    <th>Dibuat Oleh</th>
                     <th class="text-end">Aksi</th>
                 </tr>
             </thead>
@@ -46,6 +47,7 @@
                     <td>
                         <span class="badge-count">{{ $kategori->produk_count }} produk</span>
                     </td>
+                    <td class="text-muted">{{ $kategori->user->name ?? '-' }}</td>    
                     <td class="text-end">
                         @can('update', $kategori)
                         <a href="{{route('kategori.edit', $kategori)}}" class="btn btn-sm btn-caramel">Edit</a>

@@ -58,6 +58,10 @@ class ProdukSeeder extends Seeder
             }
 
             foreach ($data['items'] as $nama) {
+                if (Produk::where('nama', $nama)->exists()) {
+                    $this->command->warn("Produk '{$nama}' sudah ada, dilewati.");
+                    continue;
+                }
                 $hargaJual = round(rand($data['harga'][0], $data['harga'][1]) / 500) * 500;
                 $hargaBeli = round(($hargaJual * 0.62) / 500) * 500;
 

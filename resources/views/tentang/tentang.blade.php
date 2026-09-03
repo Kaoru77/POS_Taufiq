@@ -13,33 +13,56 @@
         </div>
     </div>
 
-    <div class="panel-card mb-3">
-        <h5 class="fw-bold mb-2" style="color:#4E2F1A;">🥐 Sweet Crumbs Bakery POS</h5>
-        <p class="text-muted mb-0">
-            Sweet Crumbs Bakery POS adalah sistem kasir berbasis web untuk mengelola
-            transaksi penjualan, data produk, kategori, dan pengguna toko roti secara
-            sederhana dan efisien.
+    <div class="panel-card text-center mb-3">
+        <div class="about-icon mb-3">🥐</div>
+        <h4 class="fw-bold mb-2" style="color:#4E2F1A;">Sweet Crumbs Bakery POS</h4>
+        <span class="badge-version mb-3">v1.0</span>
+        <p class="about-desc mx-auto mb-0">
+            Sistem kasir berbasis web untuk mengelola transaksi penjualan, data produk,
+            kategori, dan pengguna toko roti secara sederhana dan efisien.
         </p>
+    </div>
+
+    <div class="feature-grid mb-3">
+        <div class="feature-card">
+            <i class="bi bi-cup-hot"></i>
+            <div class="feature-label">Manajemen Produk</div>
+        </div>
+        <div class="feature-card">
+            <i class="bi bi-receipt"></i>
+            <div class="feature-label">Transaksi Kasir</div>
+        </div>
+        <div class="feature-card">
+            <i class="bi bi-bar-chart"></i>
+            <div class="feature-label">Dashboard Ringkas</div>
+        </div>
+        <div class="feature-card">
+            <i class="bi bi-people"></i>
+            <div class="feature-label">Multi Role</div>
+        </div>
     </div>
 
     <div class="row g-3">
         <div class="col-md-6">
             <div class="panel-card h-100">
                 <h6 class="fw-bold mb-3" style="color:#4E2F1A;">Dibuat Oleh</h6>
-                <p class="mb-1"><strong>Taufiq Hakim</strong></p>
-                <p class="text-muted mb-0">
-                    Siswa SMK Jurusan Pengembangan Perangkat Lunak dan Gim (PPLG)
-                </p>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="creator-avatar">T</div>
+                    <div>
+                        <div class="fw-semibold" style="color:#4E2F1A;">Taufiqurrochman  Hakim</div>
+                        <div class="text-muted small">Siswa SMK &ndash; PPLG</div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="panel-card h-100">
                 <h6 class="fw-bold mb-3" style="color:#4E2F1A;">Teknologi yang Digunakan</h6>
-                <ul class="text-muted mb-0 ps-3">
-                    <li>Laravel (PHP Framework)</li>
-                    <li>MySQL / MariaDB</li>
-                    <li>Bootstrap 5</li>
-                </ul>
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="tech-badge">Laravel</span>
+                    <span class="tech-badge">MySQL</span>
+                    <span class="tech-badge">Bootstrap 5</span>
+                </div>
             </div>
         </div>
     </div>
@@ -73,6 +96,77 @@
     font-size: 1.35rem;
     font-weight: 600;
     color: #fff;
+}
+
+.about-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #F3E6D8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin: 0 auto;
+}
+.badge-version {
+    display: inline-block;
+    background: #FAEEDA;
+    color: #854F0B;
+    font-size: .72rem;
+    font-weight: 600;
+    padding: 3px 12px;
+    border-radius: 999px;
+}
+.about-desc {
+    max-width: 480px;
+    color: #8A6D52;
+    font-size: .88rem;
+    line-height: 1.6;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+}
+.feature-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1rem .75rem;
+    text-align: center;
+}
+.feature-card i {
+    font-size: 22px;
+    color: #C9922E;
+}
+.feature-label {
+    font-size: .78rem;
+    font-weight: 600;
+    color: #4E2F1A;
+    margin-top: 8px;
+}
+
+.creator-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #F3E6D8;
+    color: #7B4B2A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: .9rem;
+    flex-shrink: 0;
+}
+
+.tech-badge {
+    background: #F3E6D8;
+    color: #7B4B2A;
+    font-size: .75rem;
+    padding: 4px 12px;
+    border-radius: 999px;
 }
 </style>
 

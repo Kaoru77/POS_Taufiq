@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kategori;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class KategoriController extends Controller
@@ -10,6 +11,7 @@ class KategoriController extends Controller
     public function index(Request $request)
     {
         $kategoris = Kategori::withCount('produk')
+            ->with('user')
             ->when($request->search, function ($query, $search) {
                 $query->where('nama', 'like', "%{$search}%");
             })
@@ -34,7 +36,10 @@ class KategoriController extends Controller
             'nama' => 'required|string|max:255|unique:kategoris,nama',
         ]);
 
-        Kategori::create($request->only('nama'));
+        Kategori::create([
+            'nama' => $request->nama,
+            'user_id' => Auth::id(),
+        ]);
 
         return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan.');
     }

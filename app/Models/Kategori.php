@@ -9,14 +9,18 @@ class Kategori extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nama'];
+    protected $fillable = ['nama', 'user_id'];
 
     public function produk()
     {
         return $this->hasMany(Produk::class, 'kategori_id');
     }
-     public function kategori()
- {
-     return $this->belongsTo(Kategori::class, 'kategori_id');
- }
-}   
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class, 'kategori_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+}
