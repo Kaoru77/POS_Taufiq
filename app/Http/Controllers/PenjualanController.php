@@ -92,6 +92,15 @@ class PenjualanController extends Controller
         return view('penjualan.show', compact('penjualan'));
     }
 
+    public function receipt(Penjualan $penjualan)
+    {
+        $this->authorize('view', $penjualan);
+
+        $penjualan->load(['user', 'itemPenjualan.produk']);
+
+        return view('penjualan.receipt', compact('penjualan'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -117,7 +126,7 @@ class PenjualanController extends Controller
     {
 
         $this->authorize('update', $penjualan);
-        
+
         $request->validate([
             'payment_method' => 'required|in:CASH,QRIS,TRANSFER'
         ]);

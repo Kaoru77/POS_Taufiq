@@ -11,7 +11,12 @@
             <div class="header-eyebrow">Penjualan</div>
             <h2 class="header-title mb-0">Transaksi #{{ $penjualan->id }}</h2>
         </div>
-        <a href="{{ route('penjualan.index') }}" class="btn btn-soft-light">Kembali</a>
+        <div class="d-flex gap-2">
+            <a href="{{ route('penjualan.receipt', $penjualan) }}" class="btn btn-receipt">
+                <i class="bi bi-receipt me-1"></i> Lihat Struk
+            </a>
+            <a href="{{ route('penjualan.index') }}" class="btn btn-soft-light">Kembali</a>
+        </div>
     </div>
 
     <div class="panel-card mb-3">
@@ -114,6 +119,13 @@
     padding: 8px 18px;
 }
 .btn-soft-light:hover { background: rgba(255,255,255,.18); color: #fff; }
+.btn-receipt {
+    background: #F3C77A;
+    color: #4E2F1A;
+    font-weight: 600;
+    padding: 8px 14px;
+}
+.btn-receipt:hover { background: #F7D99E; color: #4E2F1A; }
 
 .info-label {
     font-size: .75rem;
