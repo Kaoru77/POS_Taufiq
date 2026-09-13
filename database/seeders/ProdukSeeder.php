@@ -63,14 +63,12 @@ class ProdukSeeder extends Seeder
                     continue;
                 }
                 $hargaJual = round(rand($data['harga'][0], $data['harga'][1]) / 500) * 500;
-                $hargaBeli = round(($hargaJual * 0.62) / 500) * 500;
 
                 Produk::create([
                     'user_id'     => $userId,
                     'foto'        => null,
                     'nama'        => $nama,
                     'kategori_id' => $kategoriId,
-                    'harga_beli'  => $hargaBeli,
                     'harga_jual'  => $hargaJual,
                     'stok'        => rand(10, 50),
                 ]);

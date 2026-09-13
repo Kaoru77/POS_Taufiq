@@ -3,16 +3,22 @@
 namespace Database\Seeders;
 
 use App\Models\Kategori;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class KategoriSeeder extends Seeder
 {
     public function run(): void
     {
+        $adminId = User::whereHas('role', fn ($q) => $q->where('name', 'admin'))->value('id');
+
         $namaKategori = ['Roti', 'Donat', 'Kue', 'Pastry', 'Cookies', 'Dessert', 'Minuman'];
 
         foreach ($namaKategori as $nama) {
-            Kategori::firstOrCreate(['nama' => $nama]);
+            Kategori::firstOrCreate(
+                ['nama' => $nama],
+                ['user_id' => $adminId]
+            );
         }
 
         $this->command->info('7 kategori bakery berhasil di-seed.');

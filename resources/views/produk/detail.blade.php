@@ -27,16 +27,6 @@
                         <span class="badge fs-6" style="background:#F3E6D8; color:#7B4B2A;">{{ $produk->kategori->nama ?? '-' }}</span>
                     </div>
                 </div>
-
-                <!-- Card Estimasi Keuntungan -->
-                <div class="card shadow-sm" style="border-color:#D8E8CC;">
-                    <div class="card-body text-center text-md-start">
-                        <h6 class="text-muted mb-1">Estimasi Profit / Unit</h6>
-                        <h3 class="fw-bold m-0" style="color:#3B6D11;">
-                            Rp {{ number_format($produk->harga_jual - $produk->harga_beli, 0, ',', '.') }}
-                        </h3>
-                    </div>
-                </div>
             </div>
 
             <!-- Kolom Kanan: Rincian Lengkap & Riwayat Penjualan -->
@@ -48,11 +38,7 @@
                     <div class="card-body">
                         <table class="table table-borderless mb-0">
                             <tr>
-                                <td width="35%" class="fw-bold">Harga Beli</td>
-                                <td>: Rp {{ number_format($produk->harga_beli, 0, ',', '.') }}</td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold">Harga Jual</td>
+                                <td width="35%" class="fw-bold">Harga Jual</td>
                                 <td>: Rp {{ number_format($produk->harga_jual, 0, ',', '.') }}</td>
                             </tr>
                             <tr>

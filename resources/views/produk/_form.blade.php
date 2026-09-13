@@ -150,22 +150,8 @@
             @enderror
         </div>
 
-        <!-- Harga Beli -->
-        <div class="col-md-4">
-            <label class="bakery-label">Harga Beli (Rp)</label>
-            <input type="number" 
-                   name="purchase_price" 
-                   placeholder="0"
-                   min="0"
-                   class="form-control bakery-input @error('purchase_price') is-invalid @enderror"
-                   value="{{ old('purchase_price', $produk->harga_beli ?? '') }}">
-            @error('purchase_price')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-
         <!-- Harga Jual -->
-        <div class="col-md-4">
+        <div class="col-md-6">
             <label class="bakery-label">Harga Jual (Rp)</label>
             <input type="number" 
                    name="selling_price" 
@@ -179,7 +165,7 @@
         </div>
 
         <!-- Stok -->
-        <div class="col-md-4">
+        <div class="col-md-6">
             <label class="bakery-label">Jumlah Stok</label>
             <input type="number" 
                    name="stock" 

@@ -154,12 +154,18 @@
                         onsubmit="return confirm('yakin ingin checkout?')">
                         @csrf
                         @method('PUT')
-                        <select name="payment_method" class="form-select mb-2" required>
+                        <select name="payment_method" id="paymentMethod" class="form-select mb-2" required onchange="toggleCashInput(this.value)">
                             <option value="">Pilih Pembayaran</option>
                             <option value="CASH">Cash</option>
                             <option value="QRIS">QRIS</option>
                             <option value="TRANSFER">Transfer</option>
                         </select>
+
+                        <div id="cashInputWrapper" class="mb-2" style="display:none;">
+                            <input type="number" name="uang_diterima" id="uangDiterima" class="form-control cash-input mb-2"
+                                placeholder="Uang diterima (Rp)" min="0" oninput="updateKembalian()">
+                            <div class="kembalian-box" id="kembalianInfo"></div>
+                        </div>
 
                         <button class="btn btn-checkout w-100" {{$sale->status === 'COMPLETED' ? 'disabled' : ''}}>
                             Checkout
@@ -182,6 +188,39 @@
 
     </div>
 </div>
+
+<script>
+const totalPembayaran = {{ $sale->total_pembayaran }};
+
+function toggleCashInput(method) {
+    const wrapper = document.getElementById('cashInputWrapper');
+    const input = document.getElementById('uangDiterima');
+    if (method === 'CASH') {
+        wrapper.style.display = 'block';
+        input.setAttribute('required', 'required');
+    } else {
+        wrapper.style.display = 'none';
+        input.removeAttribute('required');
+        input.value = '';
+        document.getElementById('kembalianInfo').textContent = '';
+    }
+}
+
+function updateKembalian() {
+    const diterima = parseInt(document.getElementById('uangDiterima').value) || 0;
+    const info = document.getElementById('kembalianInfo');
+    info.classList.add('show');
+    if (diterima < totalPembayaran) {
+        info.classList.remove('status-cukup');
+        info.classList.add('status-kurang');
+        info.textContent = 'Uang belum cukup, kurang Rp ' + (totalPembayaran - diterima).toLocaleString('id-ID');
+    } else {
+       info.classList.remove('status-kurang');
+        info.classList.add('status-cukup');
+        info.textContent = 'Kembalian: Rp ' + (diterima - totalPembayaran).toLocaleString('id-ID');
+    }
+}
+</script>
 
 <style>
 .dash-wrapper {
@@ -323,6 +362,32 @@
     text-decoration: underline;
 }
 .btn-cancel-link:hover { color: #791F1F; }
+.cash-input {
+    border: 1px solid #E8D9C5;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: .95rem;
+}
+.cash-input:focus {
+    border-color: #C9922E;
+    box-shadow: 0 0 0 .2rem rgba(201,146,46,.15);
+}
+.kembalian-box {
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: .85rem;
+    font-weight: 600;
+    display: none;
+}
+.kembalian-box.show { display: block; }
+.kembalian-box.status-kurang {
+    background: #FCEBEB;
+    color: #791F1F;
+}
+.kembalian-box.status-cukup {
+    background: #EAF3DE;
+    color: #27500A;
+}
 </style>
 
 @endsection

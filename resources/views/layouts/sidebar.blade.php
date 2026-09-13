@@ -8,9 +8,11 @@
         <a href="{{ route('dashboard') }}" class="sidebar-link {{ Request::is('dashboard') ? 'active' : '' }}">
             <i class="bi bi-grid-1x2"></i> Dashboard
         </a>
+        @if(auth()->user()->role->name === 'admin')
         <a href="{{ route('admin.users') }}" class="sidebar-link {{ Request::is('admin/users*') ? 'active' : '' }}">
             <i class="bi bi-people"></i> Users
         </a>
+        @endif
          <a href="{{ route('kategori.index') }}" class="sidebar-link {{ Request::is('kategori*') ? 'active' : '' }}">
             <i class="bi bi-tag"></i> Kategori
         </a>

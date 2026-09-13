@@ -123,6 +123,10 @@
             <span>Rp {{ number_format($penjualan->total_pembayaran, 0, ',', '.') }}</span>
         </div>
         <div class="meta"><span>Pembayaran</span><span>{{ strtoupper($penjualan->metode_pembayaran ?? '-') }}</span></div>
+        @if($penjualan->metode_pembayaran === 'CASH' && $penjualan->uang_diterima)
+        <div class="meta"><span>Uang Diterima</span><span>Rp {{ number_format($penjualan->uang_diterima, 0, ',', '.') }}</span></div>
+        <div class="meta"><span>Kembalian</span><span>Rp {{ number_format($penjualan->kembalian, 0, ',', '.') }}</span></div>
+         @endif
         <p class="center muted">Terima kasih atas kunjungan Anda.</p>
     </main>
 

@@ -42,6 +42,19 @@
                 </div>
             </div>
         </div>
+          @if($penjualan->metode_pembayaran === 'CASH' && $penjualan->uang_diterima)
+         <hr class="my-3" style="border-color:#F0E4D6;">
+         <div class="row g-3">
+             <div class="col-6 col-md-4">
+                 <div class="info-label">Uang Diterima</div>
+                 <div class="info-value">Rp {{ number_format($penjualan->uang_diterima, 0, ',', '.') }}</div>
+             </div>
+             <div class="col-6 col-md-4">
+                 <div class="info-label">Kembalian</div>
+                 <div class="info-value" style="color:#3B6D11;">Rp {{ number_format($penjualan->kembalian, 0, ',', '.') }}</div>
+             </div>
+         </div>
+         @endif
     </div>
 
     <div class="panel-card mb-3">

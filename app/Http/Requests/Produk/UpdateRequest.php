@@ -26,7 +26,6 @@ class UpdateRequest extends FormRequest
             'foto'           => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'name'           => 'required|string|max:255',
             'kategori_id'   => 'required|exists:kategoris,id',
-            'purchase_price' => 'required|integer|min:0',
             'selling_price'  => 'required|integer|min:0',
             'stock'          => 'required|integer|min:0',
         ];
@@ -42,8 +41,6 @@ class UpdateRequest extends FormRequest
             'kategori_id.required'   => 'Kategori produk wajib diisi.',
             'kategori_id.exists'     => 'Kategori produk tidak valid.',
             'email.email'            => 'Format email tidak valid.',
-            'purchase_price.required' => 'purchase price wajib diisi.',
-            'purchase_price.integer' => 'purchase price harus diisi bilangan bulat.',
             'selling_price.required' => 'selling price wajib diisi.',
             'selling_price.integer'  => 'selling price harus diisi bilangan bulat.',
             'stock.required'         => 'Stock wajib diisi.',

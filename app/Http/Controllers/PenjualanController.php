@@ -128,15 +128,21 @@ class PenjualanController extends Controller
         $this->authorize('update', $penjualan);
 
         $request->validate([
-            'payment_method' => 'required|in:CASH,QRIS,TRANSFER'
+            'payment_method' => 'required|in:CASH,QRIS,TRANSFER',
+            'uang_diterima'  => 'required_if:payment_method,CASH|nullable|integer|min:0',
         ]);
 
         if ($penjualan->status !== 'OPEN') {
-            return back()->with('errors', 'Transaksi sudah diproses');
+            return back()->with('error', 'Transaksi sudah diproses');
         }
 
         if ($penjualan->itemPenjualan()->count() === 0) {
-            return back()->with('errors', 'Keranjang masih kosong');
+            return back()->with('error', 'Keranjang masih kosong');
+        }
+        $total = $penjualan->itemPenjualan()->sum('subtotal');
+
+        if ($request->payment_method === 'CASH' && $request->uang_diterima < $total) {
+            return back()->with('error', 'Uang diterima kurang dari total pembayaran');
         }
 
         DB::transaction(function () use ($penjualan, $request) {
@@ -146,6 +152,7 @@ class PenjualanController extends Controller
 
             $penjualan->update([
                 'metode_pembayaran' => $request->payment_method,
+                'uang_diterima'     => $request->payment_method === 'CASH' ? $request->uang_diterima : null,
                 'total_pembayaran'  => $total,
                 'status'            => 'COMPLETED'
             ]);

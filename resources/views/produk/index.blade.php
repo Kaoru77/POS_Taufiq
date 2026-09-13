@@ -54,7 +54,6 @@
                     <th>Foto</th>
                     <th>Nama</th>
                     <th>Jenis</th>
-                    <th>Harga Beli</th>
                     <th>Harga Jual</th>
                     <th>Stok</th>
                     <th class="text-end">Aksi</th>
@@ -75,7 +74,6 @@
                     <td>
                         <span class="badge-kategori">{{ $product->kategori->nama ?? '-' }}</span>
                     </td>
-                    <td>Rp {{ number_format($product->harga_beli) }}</td>
                     <td>Rp {{ number_format($product->harga_jual) }}</td>
                     <td>
                         @if($product->stok == 0)
@@ -106,7 +104,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="8" class="text-center text-muted py-4">Data tidak tersedia.</td>
+                    <td colspan="7" class="text-center text-muted py-4">Data tidak tersedia.</td>
                 </tr>
                 @endforelse
             </tbody>
