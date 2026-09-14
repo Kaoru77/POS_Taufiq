@@ -43,19 +43,49 @@
     </div>
 
     <div class="row g-3">
-        <div class="col-md-6">
+        <div class="col-md-7">
             <div class="panel-card h-100">
                 <h6 class="fw-bold mb-3" style="color:#4E2F1A;">Dibuat Oleh</h6>
-                <div class="d-flex align-items-center gap-3">
+
+                <div class="d-flex align-items-center gap-3 mb-3">
                     <div class="creator-avatar">T</div>
                     <div>
-                        <div class="fw-semibold" style="color:#4E2F1A;">Taufiqurrochman  Hakim</div>
+                        <div class="fw-semibold" style="color:#4E2F1A;">Taufiqurrochman Hakim</div>
                         <div class="text-muted small">Siswa SMK &ndash; PPLG</div>
                     </div>
                 </div>
+
+                <div class="creator-detail mb-3">
+                    <div class="creator-detail-row">
+                        <i class="bi bi-mortarboard"></i>
+                        <span>Kelas XII PPLG 4</span>
+                    </div>
+                    <div class="creator-detail-row">
+                        <i class="bi bi-geo-alt"></i>
+                        <span>Tasikmalaya</span>
+                    </div>
+                    <div class="creator-detail-row">
+                        <i class="bi bi-quote"></i>
+                        <span>"Untuk apa jahat jahat dikehidupan yang singkat ini? lagi pula, mati tidak butuh tua tidak butuh sakit, kematian hanya butuh hidup"</span>
+                    </div>
+                </div>
+
+                <hr style="border-color:#F0E4D6;">
+
+                <div class="d-flex gap-2 mt-3">
+                    <a href="https://www.instagram.com/taufiqh4kim17/" class="social-btn" title="Instagram">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="https://github.com/Kaoru77" class="social-btn" title="GitHub">
+                        <i class="bi bi-github"></i>
+                    </a>
+                    <a href="https://wa.me/6285603603024" class="social-btn" title="WhatsApp">
+                        <i class="bi bi-whatsapp"></i>
+                    </a>
+                </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-5">
             <div class="panel-card h-100">
                 <h6 class="fw-bold mb-3" style="color:#4E2F1A;">Teknologi yang Digunakan</h6>
                 <div class="d-flex flex-wrap gap-2">
@@ -159,6 +189,35 @@
     font-weight: 700;
     font-size: .9rem;
     flex-shrink: 0;
+}
+.creator-detail-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: .85rem;
+    color: #4E2F1A;
+    margin-bottom: 6px;
+}
+.creator-detail-row i {
+    color: #B49A82;
+    width: 16px;
+}
+.social-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #F3E6D8;
+    color: #7B4B2A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    text-decoration: none;
+    transition: background .2s ease, color .2s ease;
+}
+.social-btn:hover {
+    background: #C9922E;
+    color: #fff;
 }
 
 .tech-badge {
