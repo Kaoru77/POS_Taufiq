@@ -4,6 +4,10 @@
 
 @section('content')
 
+@php
+    $locked = $sale->status === 'COMPLETED' || $sale->status_pembayaran === 'MENUNGGU';
+@endphp
+
 <div class="dash-wrapper">
 
     <div class="header-card mb-3">
@@ -41,7 +45,7 @@
                         <div class="row align-items-center g-2">
                             {{-- Card Detail Produk --}}
                             <div class="col-7">
-                                <div class="product-box {{$sale->status === 'COMPLETED' ? 'disabled': ''}}">
+                                <div class="product-box {{$locked ? 'disabled': ''}}">
                                     <div class="d-flex align-items-center gap-2">
 
                                         @if($product->foto)
@@ -69,12 +73,12 @@
                                     value="1"
                                     min="1"
                                     class="qty-input w-100"
-                                    {{$sale->status === 'COMPLETED' ? 'readonly' : ''}}>
+                                    {{$locked ? 'readonly' : ''}}>
                             </div>
 
                             {{-- Tombol Tambah --}}
                             <div class="col-2">
-                                <button type="submit" class="btn-add w-100" {{$sale->status === 'COMPLETED' ? 'disabled' : ''}}>
+                                <button type="submit" class="btn-add w-100" {{$locked ? 'disabled' : ''}}>
                                     <i class="bi bi-plus-lg"></i>
                                 </button>
                             </div>
@@ -116,12 +120,13 @@
                                             value="{{$item->kuantitas}}"
                                             min="1"
                                             class="qty-input-sm"
-                                            onchange="this.form.submit()">
+                                            {{$locked ? 'readonly' : 'onchange=this.form.submit()'}}>
                                     </form>
                                 </td>
                                 <td>Rp {{number_format($item->subtotal)}}</td>
                                 <td>
                                     @can('delete', $item)
+                                    @if(!$locked)
                                     <form method="POST" action="{{route('itempenjualan.destroy',$item->id)}}">
                                         @csrf
                                         @method('DELETE')
@@ -129,6 +134,7 @@
                                             <i class="bi bi-x-lg"></i>
                                         </button>
                                     </form>
+                                    @endif
                                     @endcan
                                 </td>
                             </tr>
@@ -143,34 +149,70 @@
                     </table>
                 </div>
 
-                {{-- Footer Total & Checkout --}}
                 <div class="cart-footer">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <span class="text-muted">Total</span>
                         <span class="cart-total">Rp {{number_format($sale->total_pembayaran)}}</span>
                     </div>
 
-                    <form method="POST" action="{{route('penjualan.update',$sale->id)}}"
-                        onsubmit="return confirm('yakin ingin checkout?')">
-                        @csrf
-                        @method('PUT')
-                        <select name="payment_method" id="paymentMethod" class="form-select mb-2" required onchange="toggleCashInput(this.value)">
-                            <option value="">Pilih Pembayaran</option>
-                            <option value="CASH">Cash</option>
-                            <option value="QRIS">QRIS</option>
-                            <option value="TRANSFER">Transfer</option>
-                        </select>
+                    @if($sale->status_pembayaran === 'MENUNGGU')
 
-                        <div id="cashInputWrapper" class="mb-2" style="display:none;">
-                            <input type="number" name="uang_diterima" id="uangDiterima" class="form-control cash-input mb-2"
-                                placeholder="Uang diterima (Rp)" min="0" oninput="updateKembalian()">
-                            <div class="kembalian-box" id="kembalianInfo"></div>
+                        {{-- ================= PANEL MENUNGGU KONFIRMASI ================= --}}
+                        <div class="waiting-panel">
+                            @if($sale->metode_pembayaran === 'QRIS')
+                                <div class="qr-box">
+                                    <i class="bi bi-qr-code"></i>
+                                </div>
+                                <div class="waiting-label">Minta pelanggan scan kode ini</div>
+                            @else
+                                <div class="transfer-info">
+                                    <div class="transfer-row"><span>Bank Tujuan</span><strong>BRI</strong></div>
+                                    <div class="transfer-row"><span>No. Rekening</span><strong>9876235098</strong></div>
+                                    <div class="transfer-row"><span>Atas Nama</span><strong>Sweet Crumbs Bakery</strong></div>
+                                </div>
+                            @endif
+
+                            <form method="POST" action="{{route('penjualan.konfirmasi', $sale)}}" class="mt-2">
+                                @csrf
+                                @method('PUT')
+                                <button class="btn btn-checkout w-100">
+                                    Konfirmasi {{ $sale->metode_pembayaran === 'QRIS' ? 'Pembayaran' : 'Transfer' }} Diterima
+                                </button>
+                            </form>
+
+                            <form method="POST" action="{{route('penjualan.batalKonfirmasi', $sale)}}" class="mt-2">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="btn-cancel-link">pilih metode lain</button>
+                            </form>
                         </div>
 
-                        <button class="btn btn-checkout w-100" {{$sale->status === 'COMPLETED' ? 'disabled' : ''}}>
-                            Checkout
-                        </button>
-                    </form>
+                    @else
+
+                        {{-- ================= FORM PILIH METODE PEMBAYARAN ================= --}}
+                        <form method="POST" action="{{route('penjualan.update',$sale->id)}}"
+                            onsubmit="return confirm('yakin ingin checkout?')">
+                            @csrf
+                            @method('PUT')
+                            <select name="payment_method" id="paymentMethod" class="form-select mb-2" required onchange="toggleCashInput(this.value)">
+                                <option value="">Pilih Pembayaran</option>
+                                <option value="CASH">Cash</option>
+                                <option value="QRIS">QRIS</option>
+                                <option value="TRANSFER">Transfer</option>
+                            </select>
+
+                            <div id="cashInputWrapper" class="mb-2" style="display:none;">
+                                <input type="number" name="uang_diterima" id="uangDiterima" class="form-control cash-input mb-2"
+                                    placeholder="Uang diterima (Rp)" min="0" oninput="updateKembalian()">
+                                <div class="kembalian-box" id="kembalianInfo"></div>
+                            </div>
+
+                            <button class="btn btn-checkout w-100" {{$locked ? 'disabled' : ''}}>
+                                Bayar Sekarang
+                            </button>
+                        </form>
+
+                    @endif
 
                     @can('delete',$sale)
                     <form method="POST" action="{{route('penjualan.destroy', $sale->id)}}"
@@ -215,7 +257,7 @@ function updateKembalian() {
         info.classList.add('status-kurang');
         info.textContent = 'Uang belum cukup, kurang Rp ' + (totalPembayaran - diterima).toLocaleString('id-ID');
     } else {
-       info.classList.remove('status-kurang');
+        info.classList.remove('status-kurang');
         info.classList.add('status-cukup');
         info.textContent = 'Kembalian: Rp ' + (diterima - totalPembayaran).toLocaleString('id-ID');
     }
@@ -388,6 +430,48 @@ function updateKembalian() {
     background: #EAF3DE;
     color: #27500A;
 }
+
+.waiting-panel {
+    background: #FAF3EA;
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+}
+.qr-box {
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 10px;
+    background: #fff;
+    border: 2px solid #E8D9C5;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.qr-box i {
+    font-size: 70px;
+    color: #4E2F1A;
+}
+.waiting-label {
+    font-size: .78rem;
+    color: #8A6D52;
+    margin-bottom: 10px;
+}
+.transfer-info {
+    background: #fff;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    text-align: left;
+}
+.transfer-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: .82rem;
+    color: #4E2F1A;
+    margin-bottom: 6px;
+}
+.transfer-row:last-child { margin-bottom: 0; }
 </style>
 
 @endsection

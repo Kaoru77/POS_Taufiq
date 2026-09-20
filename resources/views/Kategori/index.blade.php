@@ -50,7 +50,7 @@
                     <td class="text-muted">{{ $kategori->user->name ?? '-' }}</td>    
                     <td class="text-end">
                         @can('update', $kategori)
-                        <a href="{{route('kategori.edit', $kategori)}}" class="btn btn-sm btn-caramel">Edit</a>
+                       <a href="{{route('kategori.edit', $kategori)}}" class="btn btn-sm btn-caramel">Ubah</a>
                         @endcan
                         @can('delete', $kategori)
                         <form action="{{route('kategori.destroy', $kategori)}}" method="POST" class="d-inline">

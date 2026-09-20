@@ -89,7 +89,7 @@
                         <a href="{{ route('produk.show', $product->id) }}" class="btn btn-sm btn-soft-brown">Detail</a>
                         @endcan
                         @can('update', $product)
-                        <a href="{{ route('produk.edit', $product->id) }}" class="btn btn-sm btn-caramel">Edit</a>
+                        <a href="{{ route('produk.edit', $product->id) }}" class="btn btn-sm btn-caramel">Ubah</a>
                         @endcan
                         @can('delete', $product)
                         <form action="{{ route('produk.destroy', $product->id) }}" method="POST" class="d-inline">

@@ -15,6 +15,7 @@ class Penjualan extends Model
         'user_id',
         'total_pembayaran',
         'metode_pembayaran',
+        'status_pembayaran',
         'uang_diterima',
         'status'
     ];

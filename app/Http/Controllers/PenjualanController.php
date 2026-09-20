@@ -44,16 +44,20 @@ class PenjualanController extends Controller
      */
     public function create(SearchRequest $request)
     {
-        $sale = Penjualan::firstOrCreate(
-            [
+        $sale = Penjualan::where('user_id', Auth::id())
+            ->where('status', 'OPEN')
+            ->whereNull('status_pembayaran')
+            ->first();
+
+        if (!$sale) {
+            $sale = Penjualan::create([
                 'user_id' => Auth::id(),
-                'status' => 'OPEN'
-            ],
-            [
+                'status' => 'OPEN',
+                'status_pembayaran' => null,
                 'total_pembayaran' => 0,
-                'metode_pembayaran' => 'CASH'
-            ]
-        );
+                'metode_pembayaran' => 'CASH',
+            ]);
+        }
 
         $keyword = $request->input('search');
 
@@ -145,22 +149,65 @@ class PenjualanController extends Controller
             return back()->with('error', 'Uang diterima kurang dari total pembayaran');
         }
 
-        DB::transaction(function () use ($penjualan, $request) {
+        if ($request->payment_method === 'CASH') {
+            DB::transaction(function () use ($penjualan, $request, $total) {
+                $penjualan->update([
+                    'metode_pembayaran' => 'CASH',
+                    'uang_diterima'     => $request->uang_diterima,
+                    'total_pembayaran'  => $total,
+                    'status_pembayaran' => null,
+                    'status'            => 'COMPLETED',
+                ]);
+            });
 
-            // 🔄 Hitung ulang total (anti manipulasi)
+            return redirect()->route('penjualan.index')->with('success', 'Transaksi berhasil diselesaikan');
+        }
+
+        // QRIS / TRANSFER: tahan dulu, tunggu konfirmasi manual dari kasir
+        $penjualan->update([
+            'metode_pembayaran' => $request->payment_method,
+            'uang_diterima'     => null,
+            'total_pembayaran'  => $total,
+            'status_pembayaran' => 'MENUNGGU',
+        ]);
+
+        return redirect()->route('penjualan.edit', $penjualan)
+            ->with('success', 'Menunggu konfirmasi pembayaran ' . $request->payment_method . '.');
+    }
+    public function konfirmasiPembayaran(Penjualan $penjualan)
+    {
+        $this->authorize('update', $penjualan);
+
+        if ($penjualan->status_pembayaran !== 'MENUNGGU') {
+            return back()->with('error', 'Tidak ada pembayaran yang menunggu konfirmasi.');
+        }
+
+        DB::transaction(function () use ($penjualan) {
             $total = $penjualan->itemPenjualan()->sum('subtotal');
-
             $penjualan->update([
-                'metode_pembayaran' => $request->payment_method,
-                'uang_diterima'     => $request->payment_method === 'CASH' ? $request->uang_diterima : null,
                 'total_pembayaran'  => $total,
-                'status'            => 'COMPLETED'
+                'status_pembayaran' => 'DITERIMA',
+                'status'            => 'COMPLETED',
             ]);
         });
 
-        return redirect()
-            ->route('penjualan.index')
-            ->with('success', 'Transaksi berhasil diselesaikan');
+        return redirect()->route('penjualan.index')->with('success', 'Pembayaran dikonfirmasi, transaksi selesai.');
+    }
+
+    public function batalKonfirmasi(Penjualan $penjualan)
+    {
+        $this->authorize('update', $penjualan);
+
+        if ($penjualan->status_pembayaran !== 'MENUNGGU') {
+            return back()->with('error', 'Tidak ada pembayaran yang bisa dibatalkan.');
+        }
+
+        $penjualan->update([
+            'status_pembayaran' => null,
+        ]);
+
+        return redirect()->route('penjualan.edit', $penjualan)
+            ->with('success', 'Pemilihan metode pembayaran dibatalkan, silakan pilih ulang.');
     }
 
     /**

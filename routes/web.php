@@ -32,6 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin,kasir')->group(function () {
         Route::resource('/produk', ProdukController::class);
         Route::get('/penjualan/{penjualan}/struk', [PenjualanController::class, 'receipt'])->name('penjualan.receipt');
+        Route::put('/penjualan/{penjualan}/konfirmasi', [PenjualanController::class, 'konfirmasiPembayaran'])->name('penjualan.konfirmasi');
+        Route::put('/penjualan/{penjualan}/batal-konfirmasi', [PenjualanController::class, 'batalKonfirmasi'])->name('penjualan.batalKonfirmasi');
         Route::resource('/penjualan', PenjualanController::class);
         Route::resource('/itempenjualan', ItemPenjualanController::class);
         Route::resource('/kategori', KategoriController::class);
