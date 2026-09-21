@@ -86,9 +86,19 @@
         </table>
     </div>
 
-    <div class="panel-card d-flex justify-content-between align-items-center">
-        <span class="text-muted">Total Pembayaran</span>
-        <span class="total-value">Rp {{ number_format($penjualan->total_pembayaran, 0, ',', '.') }}</span>
+    <div class="panel-card">
+        <div class="d-flex justify-content-between align-items-center">
+            <span class="text-muted">Subtotal</span>
+            <span>Rp {{ number_format($penjualan->subtotal_sebelum_diskon, 0, ',', '.') }}</span>
+        </div>
+        <div class="d-flex justify-content-between align-items-center text-success">
+            <span>Diskon ({{ $penjualan->diskon_persen ?? 0 }}%)</span>
+            <span>- Rp {{ number_format($penjualan->nilai_diskon, 0, ',', '.') }}</span>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mt-2">
+            <span class="text-muted">Total Pembayaran</span>
+            <span class="total-value">Rp {{ number_format($penjualan->total_pembayaran, 0, ',', '.') }}</span>
+        </div>
     </div>
 
 </div>

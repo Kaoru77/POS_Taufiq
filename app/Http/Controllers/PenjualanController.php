@@ -133,6 +133,7 @@ class PenjualanController extends Controller
 
         $request->validate([
             'payment_method' => 'required|in:CASH,QRIS,TRANSFER',
+            'diskon_persen'  => 'required|integer|min:0|max:20',
             'uang_diterima'  => 'required_if:payment_method,CASH|nullable|integer|min:0',
         ]);
 
@@ -143,7 +144,9 @@ class PenjualanController extends Controller
         if ($penjualan->itemPenjualan()->count() === 0) {
             return back()->with('error', 'Keranjang masih kosong');
         }
-        $total = $penjualan->itemPenjualan()->sum('subtotal');
+        $subtotal = $penjualan->itemPenjualan()->sum('subtotal');
+        $diskon = (int) round($subtotal * $request->diskon_persen / 100);
+        $total = $subtotal - $diskon;
 
         if ($request->payment_method === 'CASH' && $request->uang_diterima < $total) {
             return back()->with('error', 'Uang diterima kurang dari total pembayaran');
@@ -153,6 +156,7 @@ class PenjualanController extends Controller
             DB::transaction(function () use ($penjualan, $request, $total) {
                 $penjualan->update([
                     'metode_pembayaran' => 'CASH',
+                    'diskon_persen'     => $request->diskon_persen,
                     'uang_diterima'     => $request->uang_diterima,
                     'total_pembayaran'  => $total,
                     'status_pembayaran' => null,
@@ -166,6 +170,7 @@ class PenjualanController extends Controller
         // QRIS / TRANSFER: tahan dulu, tunggu konfirmasi manual dari kasir
         $penjualan->update([
             'metode_pembayaran' => $request->payment_method,
+            'diskon_persen'     => $request->diskon_persen,
             'uang_diterima'     => null,
             'total_pembayaran'  => $total,
             'status_pembayaran' => 'MENUNGGU',
@@ -183,9 +188,10 @@ class PenjualanController extends Controller
         }
 
         DB::transaction(function () use ($penjualan) {
-            $total = $penjualan->itemPenjualan()->sum('subtotal');
+            $subtotal = $penjualan->itemPenjualan()->sum('subtotal');
+            $diskon = (int) round($subtotal * ($penjualan->diskon_persen ?? 0) / 100);
             $penjualan->update([
-                'total_pembayaran'  => $total,
+                'total_pembayaran'  => $subtotal - $diskon,
                 'status_pembayaran' => 'DITERIMA',
                 'status'            => 'COMPLETED',
             ]);

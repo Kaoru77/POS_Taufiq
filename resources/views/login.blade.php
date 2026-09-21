@@ -19,6 +19,12 @@
                 <h3 class="fw-bold mb-1" style="color:#4E2F1A;">Sweet Crumbs Bakery</h3>
             </div>
 
+            @if ($loginLocked ?? false)
+                <div class="alert alert-warning small" role="alert">
+                    Login dikunci sementara. Silakan coba lagi dalam {{ ceil($lockoutSeconds / 60) }} menit.
+                </div>
+            @endif
+
             <form action="{{ route('auth') }}" method="POST">
                 @csrf
                 <div class="mb-3">
@@ -26,7 +32,8 @@
                     <div class="input-group">
                         <span class="input-group-text bg-white"><i class="bi bi-envelope"></i></span>
                         <input type="email" name="email" value="{{ old('email') }}"
-                               class="form-control @error('email') is-invalid @enderror">
+                               class="form-control @error('email') is-invalid @enderror"
+                               @disabled($loginLocked ?? false)>
                     </div>
                     @error('email')
                         <div class="text-danger small mt-1">{{ $message }}</div>
@@ -38,14 +45,15 @@
                     <div class="input-group">
                         <span class="input-group-text bg-white"><i class="bi bi-lock"></i></span>
                         <input type="password" name="password"
-                               class="form-control @error('password') is-invalid @enderror">
+                               class="form-control @error('password') is-invalid @enderror"
+                               @disabled($loginLocked ?? false)>
                     </div>
                     @error('password')
                         <div class="text-danger small mt-1">{{ $message }}</div>
                     @enderror
                 </div>
 
-                <button type="submit" class="btn btn-caramel w-100 py-2">Masuk</button> 
+                <button type="submit" class="btn btn-caramel w-100 py-2" @disabled($loginLocked ?? false)>Masuk</button>
             </form>
         </div>
     </div>

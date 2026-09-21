@@ -25,6 +25,9 @@
                         @endif
                         <h4 class="fw-bold mb-2">{{ $produk->nama }}</h4>
                         <span class="badge fs-6" style="background:#F3E6D8; color:#7B4B2A;">{{ $produk->kategori->nama ?? '-' }}</span>
+                        <div class="mt-3 fw-bold text-success">
+                            Profit per Unit: Rp {{ number_format(($produk->harga_jual ?? 0) - ($produk->harga_pokok ?? 0), 0, ',', '.') }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -37,6 +40,10 @@
                     </div>
                     <div class="card-body">
                         <table class="table table-borderless mb-0">
+                            <tr>
+                                <td width="35%" class="fw-bold">Harga Pokok</td>
+                                <td>: Rp {{ number_format($produk->harga_pokok, 0, ',', '.') }}</td>
+                            </tr>
                             <tr>
                                 <td width="35%" class="fw-bold">Harga Jual</td>
                                 <td>: Rp {{ number_format($produk->harga_jual, 0, ',', '.') }}</td>

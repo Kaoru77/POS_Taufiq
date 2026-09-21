@@ -26,6 +26,7 @@ class StoreRequest extends FormRequest
             'foto' => 'required|image|mimes:jpg,jpeg,png|max:2048',
             'name' => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategoris,id',
+            'cost_price' => 'required|integer|min:0',
             'selling_price' => 'required|integer|min:0',
             'stock' => 'required|integer|min:0',
         ];
@@ -42,8 +43,8 @@ class StoreRequest extends FormRequest
             'kategori_id.required'   => 'Kategori produk wajib diisi.',
             'kategori_id.exists'     => 'Kategori produk tidak valid.',
             'email.email'            => 'Format email tidak valid.',
-            'selling_price.required' => 'selling price wajib diisi.',
-            'selling_price.integer'  => 'selling price harus diisi bilangan bulat.',
+            'cost_price.required' => 'Harga pokok wajib diisi.',
+            'cost_price.integer'  => 'Harga pokok harus diisi bilangan bulat.',
             'stock.required'         => 'Stock wajib diisi.',
             'stock.integer'          => 'Stock harus diisi angka.',
         ];

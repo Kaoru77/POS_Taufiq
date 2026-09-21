@@ -12,7 +12,7 @@
 
     <div class="header-card mb-3">
         <div>
-            <div class="header-eyebrow">Penjualan</div>
+            <div class="header-eyebrow">Manajemen</div>
             <h2 class="header-title mb-0">Riwayat Transaksi</h2>
         </div>
         <a href="{{route('penjualan.create')}}" class="btn btn-caramel">
@@ -41,7 +41,7 @@
                     <th>Total</th>
                     <th>Metode</th>
                     <th>Status</th>
-                    <th class="text-end">Aksi</th>
+                    <th class="text-end" >Aksi</th>
                 </tr>
             </thead>
             <tbody>

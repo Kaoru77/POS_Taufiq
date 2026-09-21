@@ -66,7 +66,7 @@
                     </div>
                     <div class="creator-detail-row">
                         <i class="bi bi-quote"></i>
-                        <span>"Untuk apa jahat jahat dikehidupan yang singkat ini? lagi pula, mati tidak butuh tua tidak butuh sakit, kematian hanya butuh hidup"</span>
+                        <span>"Untuk apa jahat jahat dikehidupan yang singkat ini? lagi pula, mati tidak butuh tua, tidak butuh sakit, kematian hanya butuh hidup"</span>
                     </div>
                 </div>
 

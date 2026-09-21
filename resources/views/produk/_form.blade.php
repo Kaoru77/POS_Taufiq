@@ -150,18 +150,32 @@
             @enderror
         </div>
 
-        <!-- Harga Jual -->
+        <!-- Harga Pokok -->
         <div class="col-md-6">
-            <label class="bakery-label">Harga Jual (Rp)</label>
+            <label class="bakery-label">Harga Pokok (Rp)</label>
             <input type="number" 
-                   name="selling_price" 
+                   id="costPrice"
+                   name="cost_price" 
                    placeholder="0"
                    min="0"
-                   class="form-control bakery-input @error('selling_price') is-invalid @enderror"
-                   value="{{ old('selling_price', $produk->harga_jual ?? '') }}">
-            @error('selling_price')
+                   class="form-control bakery-input @error('cost_price') is-invalid @enderror"
+                   value="{{ old('cost_price', $produk->harga_pokok ?? '') }}">
+            @error('cost_price')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
+        </div>
+
+        <!-- Harga Jual Otomatis -->
+        <div class="col-md-6">
+            <label class="bakery-label">Harga Jual (Rp)</label>
+            <input type="number"
+                   id="sellingPrice"
+                   name="selling_price"
+                   placeholder="0"
+                   class="form-control bakery-input bg-light"
+                   value="{{ old('selling_price', $produk->harga_jual ?? '') }}"
+                   readonly>
+            <small class="text-muted">keuntungan 30%.</small>
         </div>
 
         <!-- Stok -->
@@ -201,4 +215,12 @@ function previewImage(input) {
         if (previewContainer) previewContainer.style.display = 'block';
     }
 }
+
+function updateSellingPrice() {
+    const costPrice = Number(document.getElementById('costPrice').value) || 0;
+    document.getElementById('sellingPrice').value = Math.round(costPrice * 1.3);
+}
+
+document.getElementById('costPrice').addEventListener('input', updateSellingPrice);
+updateSellingPrice();
 </script>

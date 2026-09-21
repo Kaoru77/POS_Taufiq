@@ -119,8 +119,16 @@
 
         <hr class="rule">
         <div class="summary">
-            <span>Total</span>
-            <span>Rp {{ number_format($penjualan->total_pembayaran, 0, ',', '.') }}</span>
+            <span>Subtotal</span>
+            <span>Rp {{ number_format($penjualan->subtotal_sebelum_diskon, 0, ',', '.') }}</span>
+        </div>
+        <div class="summary">
+            <span>Diskon ({{ $penjualan->diskon_persen ?? 0 }}%)</span>
+            <span>- Rp {{ number_format($penjualan->nilai_diskon, 0, ',', '.') }}</span>
+        </div>
+        <div class="summary">
+            <strong>Total</strong>
+            <strong>Rp {{ number_format($penjualan->total_pembayaran, 0, ',', '.') }}</strong>
         </div>
         <div class="meta"><span>Pembayaran</span><span>{{ strtoupper($penjualan->metode_pembayaran ?? '-') }}</span></div>
         @if($penjualan->metode_pembayaran === 'CASH' && $penjualan->uang_diterima)

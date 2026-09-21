@@ -150,9 +150,23 @@
                 </div>
 
                 <div class="cart-footer">
+                    @php
+                        $subtotal = $sale->itemPenjualan->sum('subtotal');
+                        $diskonPersen = $sale->diskon_persen ?? 0;
+                        $nilaiDiskon = (int) round($subtotal * $diskonPersen / 100);
+                        $totalSetelahDiskon = $subtotal - $nilaiDiskon;
+                    @endphp
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Subtotal</span>
+                        <span>Rp {{number_format($subtotal, 0, ',', '.')}}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3 text-success">
+                        <span>Diskon</span>
+                        <span id="discountSummary">0% (-Rp {{number_format($nilaiDiskon, 0, ',', '.')}})</span>
+                    </div>
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <span class="text-muted">Total</span>
-                        <span class="cart-total">Rp {{number_format($sale->total_pembayaran)}}</span>
+                        <span class="cart-total" id="totalSummary">Rp {{number_Format($subtotal, 0, ',', '.')}}</span>
                     </div>
 
                     @if($sale->status_pembayaran === 'MENUNGGU')
@@ -194,6 +208,9 @@
                             onsubmit="return confirm('yakin ingin checkout?')">
                             @csrf
                             @method('PUT')
+                            <label for="diskonPersen" class="form-label mb-1">Diskon (maksimal 20%)</label>
+                            <input type="number" name="diskon_persen" id="diskonPersen" class="form-control mb-2"
+                                value="{{ $diskonPersen }}" min="0" max="20" step="1" required oninput="updateTotal()">
                             <select name="payment_method" id="paymentMethod" class="form-select mb-2" required onchange="toggleCashInput(this.value)">
                                 <option value="">Pilih Pembayaran</option>
                                 <option value="CASH">Cash</option>
@@ -232,7 +249,22 @@
 </div>
 
 <script>
-const totalPembayaran = {{ $sale->total_pembayaran }};
+const subtotalPenjualan = {{ $subtotal }};
+let totalPembayaran = subtotalPenjualan;
+
+function updateTotal() {
+    const diskonInput = document.getElementById('diskonPersen');
+    if (!diskonInput) {
+        totalPembayaran = {{ $sale->total_pembayaran }};
+        return;
+    }
+    const diskon = Math.min(Math.max(parseInt(diskonInput.value) || 0, 0), 20);
+    const nilaiDiskon = Math.round(subtotalPenjualan * diskon / 100);
+    totalPembayaran = subtotalPenjualan - nilaiDiskon;
+    document.getElementById('discountSummary').textContent = diskon + '% (-Rp ' + nilaiDiskon.toLocaleString('id-ID') + ')';
+    document.getElementById('totalSummary').textContent = 'Rp ' + totalPembayaran.toLocaleString('id-ID');
+    updateKembalian();
+}
 
 function toggleCashInput(method) {
     const wrapper = document.getElementById('cashInputWrapper');
@@ -247,6 +279,8 @@ function toggleCashInput(method) {
         document.getElementById('kembalianInfo').textContent = '';
     }
 }
+
+updateTotal();
 
 function updateKembalian() {
     const diterima = parseInt(document.getElementById('uangDiterima').value) || 0;

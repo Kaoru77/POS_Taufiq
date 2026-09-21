@@ -37,7 +37,8 @@
                     <th>Nama Kategori</th>
                     <th>Jumlah Produk</th>
                     <th>Dibuat Oleh</th>
-                    <th class="text-end">Aksi</th>
+                    
+                    <th class="text-end"  @if(auth()->user()->role->name === 'admin')>Aksi</th @endif>
                 </tr>
             </thead>
             <tbody>
